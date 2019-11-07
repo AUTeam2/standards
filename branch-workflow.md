@@ -20,6 +20,12 @@ Vi benytter branches til at udvikle features, rette bugs, osv. Denne beskrivelse
 - `git commit`
 - Skriv commit-besked
 
+### Nu er der nok gået noget tid, så hent lige den nyeste kode fra repo igen...
+- Kør `git pull` for at hente nyeste versioner fra **Github**.
+
+### Merge-konflikter?
+- Så må du lige fikse dem først...
+
 ### Push upstream (til **Github**) med en ny branch
 - `git push --set-upstream origin feature/feature-navn`
 - Nu kan du se den nye branch på Github
@@ -28,6 +34,4 @@ Vi benytter branches til at udvikle features, rette bugs, osv. Denne beskrivelse
 - Vælg den nye branch
 - Klik på knappen *Compare & pull request*
 - Skriv kommentarer til pull request
-- Assign en person til review
-
-
+- Assign en person til review og merge.
