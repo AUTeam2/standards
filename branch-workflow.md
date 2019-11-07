@@ -24,7 +24,7 @@ Vi benytter branches til at udvikle features, rette bugs, osv. Denne beskrivelse
 - Kør `git pull` for at hente nyeste versioner fra **Github**.
 
 ### Merge-konflikter?
-- Så må du lige fikse dem først...
+- Så må du lige fikse dem først, og adde+committe en gang til...
 
 ### Push upstream (til **Github**) med en ny branch
 - `git push --set-upstream origin feature/feature-navn`
