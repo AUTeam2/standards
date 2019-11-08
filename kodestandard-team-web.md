@@ -41,7 +41,7 @@ Det giver mest mening at følge typiske standarder for de sprog, vi bruger.
 
 ## Dokumentation
 
-- Vi dokumenterer vores kode, mens vi skriver.
+- Vi dokumenterer vores kode, mens vi skriver koden.
 - Der er forskel på at kommentere og dokumentere. Det er godt at kommentere, og det er _krævet_ at dokumentere.
 - Vi brug de værktøjer, der er naturlige til det sprog, vi skriver i.
 	* **Python**:
