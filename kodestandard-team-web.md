@@ -52,7 +52,8 @@ Det giver mest mening at følge typiske standarder for de sprog, vi bruger.
 		- Er nærmest selv-dokumterende, så no worries.
 		- Blokke kan indsættes med `<!-- block doc -->` 
 	* **JavaScript**:
-		- Vi må vurdere, om der er et behov, hvis vi skal skrive en væsentlig mængde. 
+		- Vi må vurdere, om der er et behov, hvis vi skal skrive en væsentlig mængde.
+		- Her er en ide: [JSDoc](https://gomakethings.com/whats-the-best-way-to-document-javascript/).
 	* **C/C++**:
 		- Vi benytter Doxygen til at dokumentere C/C++-kode. 
 
