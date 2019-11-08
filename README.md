@@ -1,4 +1,5 @@
-Dette repo skal med tiden indeholde alle vores standarder
-- Kodestandard
-- Forskellige workflows
-- Osv...
+# Vi bruger dette repo til alle vores standarder :rocket:
+
+- [x] Kodestandarder
+- [x] Forskellige workflows
+- [ ] Osv...
