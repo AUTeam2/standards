@@ -4,11 +4,11 @@
 Hej! Det er sjovere og nemmere at arbejde sammen, når vi er enige om et par standarder. Når vi lærer mere, så opdaterer vi standarden.
 
 ## Versioner 
-- Python >= 3.6 [[Nyeste er 3.8]](https://docs.python.org/3/)
-- Django >= 2.2 [[Nyeste er 2.2.7]](https://docs.djangoproject.com/en/2.2/)
+- Python ≥ 3.6 [[Nyeste er 3.8]](https://docs.python.org/3/)
+- Django ≥ 2.2 [[Nyeste er 2.2.7]](https://docs.djangoproject.com/en/2.2/)
 - HTML5 [[Nyeste]](https://www.w3schools.com/html/html5_intro.asp)
-- JavaScript >= ES6 [[Nyeste er ES6]](https://www.w3schools.com/js/js_es6.asp)
-- C++ >= C++11 
+- JavaScript ≥ ES6 [[Nyeste er ES6]](https://www.w3schools.com/js/js_es6.asp)
+- C++ ≥ C++11 
 
 ## Kodestandarder
 Det giver mest mening at følge typiske standarder for de sprog, vi bruger.
@@ -106,9 +106,3 @@ Det giver mest mening at følge typiske standarder for de sprog, vi bruger.
 
 
 That's all folks! :rabbit:
-
-> Written with [StackEdit](https://stackedit.io/).
-<!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE0Njg4NzYwNTIsMTE4MDI0NzIxOCwtMj
-A1MTY0MTg4NSw1ODY2MjgxOTVdfQ==
--->
