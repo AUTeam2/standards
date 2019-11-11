@@ -9,6 +9,7 @@ Hej! Det er sjovere og nemmere at arbejde sammen, når vi er enige om et par sta
 - HTML5 [[Nyeste]](https://www.w3schools.com/html/html5_intro.asp)
 - JavaScript ≥ ES6 [[Nyeste er ES6]](https://www.w3schools.com/js/js_es6.asp)
 - C++ ≥ C++11 
+- CentOS server ≥ 7.7, < 8 [[Image til 7.7 her]](http://isoredirect.centos.org/centos/7/isos/x86_64/).
 
 ## Kodestandarder
 Det giver mest mening at følge typiske standarder for de sprog, vi bruger.
