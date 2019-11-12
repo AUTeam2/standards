@@ -12,7 +12,7 @@ Hej! Det er sjovere og nemmere at arbejde sammen, når vi er enige om et par sta
 - CentOS server ≥ 7.7, < 8 [[Image til 7.7 her]](http://isoredirect.centos.org/centos/7/isos/x86_64/).
 
 ## Kodestandarder
-Det giver mest mening at følge typiske standarder for de sprog, vi bruger.
+Det giver mest mening at følge typiske standarder for de sprog, vi bruger [med hjælp fra vores IDE](https://github.com/AUTeam2/standards/blob/master/PyCharm.md#kodestandard).
 
 ### Python
 - De fleste skriver Python efter [PEP8](https://www.python.org/dev/peps/pep-0008/). Så det prøver vi også.
