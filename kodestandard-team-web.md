@@ -38,7 +38,7 @@ Det giver mest mening at følge typiske standarder for de sprog, vi bruger [med 
 - Vi følger [JS Style Guide](https://www.w3schools.com/js/js_conventions.asp)
 
 ### C/C++
-- Vi benytter AU's kodestandard.
+- Vi benytter [AU's kodestandard](https://blackboard.au.dk/bbcswebdav/pid-1817350-dt-content-rid-5205395_1/courses/BB-Cou-UUVA-78333/BB-Cou-UUVA-54474_ImportedContent_20170612103145/BB-Cou-UUVA-62537_ImportedContent_20160606015213/Programmeringsstandard_UK.pdf).
 
 ## Dokumentation
 
