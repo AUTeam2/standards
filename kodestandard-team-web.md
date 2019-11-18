@@ -4,12 +4,13 @@
 Hej! Det er sjovere og nemmere at arbejde sammen, når vi er enige om et par standarder. Når vi lærer mere, så opdaterer vi standarden.
 
 ## Versioner 
-- Python ≥ 3.6 [[Nyeste er 3.8]](https://docs.python.org/3/)
-- Django ≥ 2.2 [[Nyeste er 2.2.7]](https://docs.djangoproject.com/en/2.2/)
+- Python ≥ 3.6.0, < 3.9 [[Nyeste er 3.8]](https://docs.python.org/3/)
+- Django ≥ 2.2.0, < 2.3 [[Nyeste er 2.2.7]](https://docs.djangoproject.com/en/2.2/)
 - HTML5 [[Nyeste]](https://www.w3schools.com/html/html5_intro.asp)
 - JavaScript ≥ ES6 [[Nyeste er ES6]](https://www.w3schools.com/js/js_es6.asp)
 - C++ ≥ C++11 
 - CentOS server ≥ 7.7, < 8 [[Image til 7.7 her]](http://isoredirect.centos.org/centos/7/isos/x86_64/).
+- PostgreSQL ≥ 12.0.0, < 12.1.0.
 
 ## Kodestandarder
 Det giver mest mening at følge typiske standarder for de sprog, vi bruger [med hjælp fra vores IDE](https://github.com/AUTeam2/standards/blob/master/PyCharm.md#kodestandard).
