@@ -27,7 +27,7 @@ Vi benytter branches til at udvikle features, rette bugs, osv. Denne beskrivelse
 - Så må du lige fikse dem først, og adde+committe en gang til...
 
 ### Push upstream (til **Github**) med en ny branch
-- `git push --set-upstream origin feature/feature-navn`
+- `git push --set-upstream-to origin feature/feature-navn`
 - Nu kan du se den nye branch på Github
 
 ### Lav pull-request
