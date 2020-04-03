@@ -65,12 +65,12 @@ Migrationer skal versionsstyres ligesom kode, fordi:
 
 ## Eksempel: Migrations og versionsstyring på udviklingsmaskine
 0. Antaget at databasen på Marcs PC stemmer overens med Master fra Timebox 7.
-   * Hvis der er noget rod dér, så må han nok `flush` den (se længere nede).
+   * Hvis der er noget rod dér, så må han nok tilbage til Timebox 6.
 1. I Timebox 8 ændrer Jan i _models.py_, kører `makemigrations` og `migrate`.
 2. Jan tester og alt er OK.
 3. Den nye migrations-fil comittes sammen med resten af koden.
 4. Jan pusher ændringerne op på Github, og får dem merget ind i Master.
-5. Marc trækker nyeste Master ned fra Github. Marcs database er bagud i forhold til Jans.
+5. Marc trækker nyeste Master ned fra Github. Marcs database er 1 Timebox bagud i forhold til Jans.
 6. For at komme up-to-date kører Marc `migrate`. Dvs. han benytter den migrations-fil, som Jan har lavet.
    * NB.: Marc kører _ikke_ `makemigrations`.
 
@@ -95,7 +95,7 @@ Hvis du vil tømme databasen (dvs. nulstille alle tabeller, men ikke slette tabe
 
 ### DuplicateTable: relation ... already exists
 Hvis du får denne fejl, er der nok blevet slettet en migrations-fil, så Djangos liste over migrations i databasen ikke stemmer overens med filerne fra Github.
-Det er et permanent synkroniseringsproblem, der kun kan løses manuelt (Note 1).
+Det er et permanent synkroniseringsproblem, der nok kun kan løses manuelt (Note 1).
 Ændringer er ikke længere styret vha. Django, og `flush` vil ikke kunne fjerne det problem, som giver fejl.
 - Rul databasen tilbage til nul: `docker-compose exec webinterface python manage.py migrate demo_module zero`
 - Kig ind i databasen (se hvordan længere nede):
@@ -104,12 +104,13 @@ Det er et permanent synkroniseringsproblem, der kun kan løses manuelt (Note 1).
   * De tilbageværende tabeller med navne som demo_module_tablename er de, som ikke kunne rulles tilbage, og derfor giver problemer.
   * Fjern manuelt problemet (fx med SQL `drop table ...`, eller markér tabel og vælg Drop cascade).
 - Kør migrations igen (`migrate`).
+- Bekræft at databasen nu er opdateret til og med nyeste migrations-fil.
 
 Note 1) Hvis du er 100% sikker på, at databasen stemmer overens med migrations, kan du prøve at redde situationen med `docker-compose exec webinterface python manage.py migrate --fake-initial`
 
 
 ### Permission denied, eller lignende
-Vi har oplevet, at læse/skrive rettigheder til database og migrations ikke stemmer overens, og at Django ikke vil migrere. Man bør nok undersøge hvilke filrettigheder, den er gal med, men man kan gennemføre migrations som `root` (`-u 0`) ved fx:
+Vi har oplevet, at læse/skrive rettigheder til database og migrations ikke stemmer overens, og at Django ikke kan/vil migrere. Man bør nok undersøge hvilke filrettigheder, den er gal med, men man _kan_ gennemtvinge migrations som `root` (`-u 0`) ved fx:
 - `docker-compose exec -u 0 webinterface python manage.py migrate`.
 
 
@@ -119,7 +120,7 @@ Hvis intet virker, så:
 - Drop databasen / alle tabeller i databasen
 - Kør så `makemigrations`
 - Kør `migrate`.
-- Men PAS PÅ med at committe, at du har slettet filerne! Diskutér med teamet først!
+- Men PAS PÅ med at committe sletning af filerne! Diskutér med teamet først!
 
 
 ## Load startdata (fixtures)
