@@ -1,10 +1,10 @@
-# Opdatering af databasestruktur med migrationer
+# Fælles håndtering af databasestruktur med migrationer
 
 Her er et par tips & tricks til at arbejde med databasen mens vi udvikler på projektet.
 Skriv gerne til når/hvis du har flere tips & tricks.
 
 # Indhold
-- Databasemigrations
+- Hvad er migrations?
 - Django-kommandoer til migrations
 - Migrations opstår når...
 - Principper for versionsstyring af migrations
@@ -19,7 +19,7 @@ Skriv gerne til når/hvis du har flere tips & tricks.
 - Udfordringer når vi nærmer os en endelig version
 
 
-## Databasemigrationer
+## Hvad er migrations?
 I Django er migrations de _.py_-filer, som  fortæller Django, hvordan den skal implementere ændringer i en SQL-database. Det er en slags opskrift.
 Migrations laves automatisk _per app_. Så _demo-modul_ har sine egne migrations, der ligger i `demo_module/migrations`. Der kan dog være afhængigheder til andre apps (fx via ForeignKeys).
 Man kan som udvikler så vælge at implementere ændringerne (udføre opskriften), dvs. `migrate`. Det kan være både frem til nye versioner eller tilbage til ældre versioner.
@@ -86,29 +86,40 @@ Migrationer skal versionsstyres ligesom kode, fordi:
 
 ## Fejl og mulige fixes
 
-### Nulstil database...
-Hvis du vil tømme databasen (dvs. nulstille tabeller, men ikke slette tabellerne):
+### Tøm database...
+Hvis du vil tømme databasen (dvs. nulstille alle tabeller, men ikke slette tabellerne):
 - Flush, dvs. tøm, hele databasen med kommandoen `docker-compose exec webinterface python manage.py flush`.
   * Hvis du kan nøjes med at tømme en enkelt database, så brug option `--database <database-navn>`.
   * Pt. har vi dog kun 1 database ved navn 'default' (svarer til webinterface_dev, se _settings.py_).
-- Kør alle migrations igen (`migrate`).
-- Hvis dette ikke virker, så `flush`, slet alle filer i `migrations/`-mappen og kør så `makemigrations` og endelig `migrate`.
-  * Men du må _ikke_ committe, at du har slettet filerne!
-Dette virker nok ikke, hvis du har mistet migrationsfiler. Se da nedenfor.
 
 
 ### DuplicateTable: relation ... already exists
-Der er nok blevet slettet en migrations-fil, så Djangos liste over migrations i databasen ikke stemmer overens med filerne fra Github.
-Det er et permanent synkroniseringsissue, der kun kan løses manuelt.
-Ændringer er altså ikke længere styret vha. Django, og `flush` vil ikke kunne fjerne den tabel eller kolonne, som giver fejl.
-- Kig ind i databasen (se hvordan længere nede)
-- Find tabel eller række, som giver problemet.
-- Fjern manuelt problemet (fx med `drop table ...`).
+Hvis du får denne fejl, er der nok blevet slettet en migrations-fil, så Djangos liste over migrations i databasen ikke stemmer overens med filerne fra Github.
+Det er et permanent synkroniseringsproblem, der kun kan løses manuelt (Note 1).
+Ændringer er ikke længere styret vha. Django, og `flush` vil ikke kunne fjerne det problem, som giver fejl.
+- Rul databasen tilbage til nul: `docker-compose exec webinterface python manage.py migrate demo_module zero`
+- Kig ind i databasen (se hvordan længere nede):
+  * I tabellen `django_migrations` finder du den migration, der ikke kunne rulles tilbage for demo-module.
+    - Fjern dens række! (i pgAdmin: Marker række, tryk på slet (skraldespand), tryk på Save data changes). 
+  * De tilbageværende tabeller med navne som demo_module_tablename er de, som ikke kunne rulles tilbage, og derfor giver problemer.
+  * Fjern manuelt problemet (fx med SQL `drop table ...`, eller markér tabel og vælg Drop cascade).
+- Kør migrations igen (`migrate`).
+
+Note 1) Hvis du er 100% sikker på, at databasen stemmer overens med migrations, kan du prøve at redde situationen med `docker-compose exec webinterface python manage.py migrate --fake-initial`
 
 
 ### Permission denied, eller lignende
 Vi har oplevet, at læse/skrive rettigheder til database og migrations ikke stemmer overens, og at Django ikke vil migrere. Man bør nok undersøge hvilke filrettigheder, den er gal med, men man kan gennemføre migrations som `root` (`-u 0`) ved fx:
 - `docker-compose exec -u 0 webinterface python manage.py migrate`.
+
+
+### Permanent uløselige fejl
+Hvis intet virker, så:
+- Slet alle filer i `migrations/`-mappen
+- Drop databasen / alle tabeller i databasen
+- Kør så `makemigrations`
+- Kør `migrate`.
+- Men PAS PÅ med at committe, at du har slettet filerne! Diskutér med teamet først!
 
 
 ## Load startdata (fixtures)
