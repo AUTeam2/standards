@@ -66,21 +66,34 @@ Migrationer skal versionsstyres ligesom kode, fordi:
    * Så skal Daniel og Jan aftale en måde at kopiere data fra gamle tabeller over i midlertidige tabeller.
    * Daniel kører `migrate` og accepterer de irreversible ændringer.
    * Endelig kopierer og konverterer de data fra de midlertidige tabeller over i de nye tabeller.
+   * Hvis dette sker tit, så overvej at bruge _fixtures_, se længere nede (load startdata).
 
 
-## Permission denied, eller lignende
-Vi har oplevet, at læse/skrive rettigheder til database og migrations ikke stemmer overens, og at Django ikke vil migrere. Man bør nok undersøge hvilke filrettigheder, den er gal med, men man kan gennemføre migrations som `root` (`-u 0`) ved fx:
-- `docker-compose exec -u 0 webinterface python manage.py migrate`.
+## Fejl og mulige fixes
 
-
-## Sidste udvej: Ultra-destruktiv måde at starte fra nul, hvis alt andet er gået i lort...
-Hvis fx migrations-filer er gået tabt, eller man står i en anden håbløs situation:
-- Flush, dvs. slet, hele databasen med kommandoen `docker-compose exec webinterface python manage.py flush`.
-  * Hvis du kan nøjes med at slette en enkelt database, så brug option `--database <database-navn>`.
+### Nulstil database...
+Hvis du vil tømme databasen (dvs. nulstille tabeller, men ikke slette tabellerne):
+- Flush, dvs. tøm, hele databasen med kommandoen `docker-compose exec webinterface python manage.py flush`.
+  * Hvis du kan nøjes med at tømme en enkelt database, så brug option `--database <database-navn>`.
   * Pt. har vi dog kun 1 database ved navn 'default' (svarer til webinterface_dev, se _settings.py_).
-- Kør alle migrations (`migrate`).
+- Kør alle migrations igen (`migrate`).
 - Hvis dette ikke virker, så `flush`, slet alle filer i `migrations/`-mappen og kør så `makemigrations` og endelig `migrate`.
   * Men du må _ikke_ committe, at du har slettet filerne!
+Dette virker nok ikke, hvis du har mistet migrationsfiler. Se da nedenfor.
+
+
+### DuplicateTable: relation ... already exists
+Der er nok blevet slettet en migrations-fil, så Djangos liste over migrations i databasen ikke stemmer overens med filerne fra Github.
+Det er et permanent synkroniseringsissue, der kun kan løses manuelt.
+Ændringer er altså ikke længere styret vha. Django, og `flush` vil ikke kunne fjerne den tabel eller kolonne, som giver fejl.
+- Kig ind i databasen (se hvordan længere nede)
+- Find tabel eller række, som giver problemet.
+- Fjern manuelt problemet (fx med `drop table ...`).
+
+
+### Permission denied, eller lignende
+Vi har oplevet, at læse/skrive rettigheder til database og migrations ikke stemmer overens, og at Django ikke vil migrere. Man bør nok undersøge hvilke filrettigheder, den er gal med, men man kan gennemføre migrations som `root` (`-u 0`) ved fx:
+- `docker-compose exec -u 0 webinterface python manage.py migrate`.
 
 
 ## Load startdata (fixtures)
