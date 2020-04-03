@@ -49,7 +49,7 @@ I databasetabellen `django_migrations` kan man også se migrations, der er imple
 ## Migrations opstår når...
 Når der ændres i _models.py_ (det kan være en ny tabel, ændring af felttype, osv), så har du en ikke-implementeret ændring til databasen:
  - Når du derefter kører `makemigrations`, så sammenligner Django _models.py_ med gamle migrations-filer (den sammenligner _ikke_ med databasens nuværende struktur). Den opretter så en ny _.py_-fil til at implementere ændringerne.
-- Nogle migrationer kan implementeres uden at give i konflikt med databasen (fx en ny tabel).
+- Nogle migrationer kan implementeres uden at give konflikt med databasen (fx en ny tabel).
 - Andre migrationer vil give konflikter (fx ændring af datatype for en søjle, fx fra boolean til tekst).
 - Migrationer kan give datatab; hvis du sletter et felt/en tabel i _models.py_, og migrerer, så bliver tilhørende data slettet.
   * Det samme sker, hvis du ruller tilbage til en version af databasen, hvor felt/tabel ikke fandtes.
