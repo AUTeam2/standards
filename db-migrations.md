@@ -3,6 +3,21 @@
 Her er et par tips & tricks til at arbejde med databasen mens vi udvikler på projektet.
 Skriv gerne til når/hvis du har flere tips & tricks.
 
+# Indhold
+- Databasemigrations
+- Django-kommandoer til migrations
+- Migrations opstår når...
+- Principper for versionsstyring af migrations
+- Eksempel: Migrations og versionsstyring på udviklingsmaskine
+- Eksempel fortsat: Migrations og versionsstyring på produktionsserver
+- Fejl og mulige fixes
+  * Nulstil database...
+  * DuplicateTable: relation ... already exists
+  * Permission denied, eller lignende
+- Load startdata (fixtures)
+- Kig i databasen
+- Udfordringer når vi nærmer os en endelig version
+
 
 ## Databasemigrationer
 I Django er migrations de _.py_-filer, som  fortæller Django, hvordan den skal implementere ændringer i en SQL-database. Det er en slags opskrift.
@@ -31,7 +46,7 @@ Nb. hvis du arbejder uden for Django-containeren, så brug `docker-compose exec 
 
 I databasetabellen `django_migrations` kan man også se migrations, der er implementeret.
 
-## Migrations opstår...
+## Migrations opstår når...
 Når der ændres i _models.py_ (det kan være en ny tabel, ændring af felttype, osv), så har du en ikke-implementeret ændring til databasen:
  - Når du derefter kører `makemigrations`, så sammenligner Django _models.py_ med gamle migrations-filer (den sammenligner _ikke_ med databasens nuværende struktur). Den opretter så en ny _.py_-fil til at implementere ændringerne.
 - Nogle migrationer kan implementeres uden at give i konflikt med databasen (fx en ny tabel).
@@ -40,7 +55,7 @@ Når der ændres i _models.py_ (det kan være en ny tabel, ændring af felttype,
   * Det samme sker, hvis du ruller tilbage til en version af databasen, hvor felt/tabel ikke fandtes.
 
 
-## Principper
+## Principper for versionsstyring af migrations
 Migrationer skal versionsstyres ligesom kode, fordi:
 - Migrations gør det muligt at rulle databasen frem og tilbage ensartet på alle udviklingsmaskiner.
 - Det er muligt at rulle databasen tilbage til en tidligere version, hvis noget går galt.
@@ -60,7 +75,7 @@ Migrationer skal versionsstyres ligesom kode, fordi:
    * NB.: Marc kører _ikke_ `makemigrations`.
 
 
-## Migrations og versionsstyring på produktionsserver - eksempel fortsat
+## Eksempel fortsat: Migrations og versionsstyring på produktionsserver
 7. Daniel skal opdatere AU-serveren, og gør det samme som Marc gjorde.
 8. Hvis der er irreversible ændringer i databasen, fx ændring af datatayper, og data ikke må gå tabt:
    * Så skal Daniel og Jan aftale en måde at kopiere data fra gamle tabeller over i midlertidige tabeller.
