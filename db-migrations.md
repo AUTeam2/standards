@@ -40,27 +40,20 @@ Når der ændres i _models.py_ (det kan være en ny tabel, ændring af felttype,
   * Det samme sker, hvis du ruller tilbage til en version af databasen, hvor felt/tabel ikke fandtes.
 
 
-## Udfordringer når vi nærmer os en endelig version
-- Vi har forskellige versioner af "databasen" på vores forskellige udviklingsmaskiner.
-  * Vi har kørt forskellige versioner af migrations, har forskellige versioner af _models.py_.
-- På udviklingsserveren (mooo) kan vi godt leve med, at databasen bliver slettet / flushet en gang i mellem.
-- På produktionsserveren (AU-server) kører master-version altid _inklusive_ data i databasen, så der kan vi ikke bare slette / flushe.
-- Master skal holdes konsistent for alle maskiner ud fra vores fælles kodebase.
-
-
 ## Principper
 Migrationer skal versionsstyres ligesom kode, fordi:
+- Migrationer gør det muligt at rulle databasen frem og tilbage på alle udviklingsmaskiner.
+- Det er muligt at rulle databasen tilbage til en tidligere version, hvis noget går galt.
 - Migrationer viser udvikling i databasens struktur mellem forskellige versioner. Det giver traceability.
-- Migrationer hænger sammen med versionering af Webinterface (release features ver. 2.00 + database ver. 2.00)
-- Migrationer gør det muligt at "rulle tilbage" til en tidligere version, hvis noget går galt.
+- Migrationer hænger sammen med versionering af Webinterface (fx ved release af features ver. 2.00 + database ver. 2.00)
 
 
-## Migrations og versionsstyring på udviklingsmaskine - eksempel
+## Eksempel: Migrations og versionsstyring på udviklingsmaskine
 0. Antaget at databasen på Marcs PC stemmer overens med Master fra Timebox 7.
-   * Hvis der er noget rod dér, så må han `flush` den (se længere nede).
+   * Hvis der er noget rod dér, så må han nok `flush` den (se længere nede).
 1. I Timebox 8 ændrer Jan i _models.py_, kører `makemigrations` og `migrate`.
 2. Jan tester og alt er OK.
-3. Den nye migrations-fil comittes sammen med resten af koden
+3. Den nye migrations-fil comittes sammen med resten af koden.
 4. Jan pusher ændringerne op på Github, og får dem merget ind i Master.
 5. Marc trækker nyeste Master ned fra Github. Marcs database er bagud i forhold til Jans.
 6. For at komme up-to-date kører Marc `migrate`. Dvs. han benytter den migrations-fil, som Jan har lavet.
@@ -70,7 +63,7 @@ Migrationer skal versionsstyres ligesom kode, fordi:
 ## Migrations og versionsstyring på produktionsserver - eksempel fortsat
 7. Daniel skal opdatere AU-serveren, og gør det samme som Marc gjorde.
 8. Hvis der er irreversible ændringer i databasen, fx ændring af datatayper, og data ikke må gå tabt:
-   * Så skal Daniel og Jan aftale en måde at kopiere data fra gamle tabeller over i midlertidige tabeller
+   * Så skal Daniel og Jan aftale en måde at kopiere data fra gamle tabeller over i midlertidige tabeller.
    * Daniel kører `migrate` og accepterer de irreversible ændringer.
    * Endelig kopierer og konverterer de data fra de midlertidige tabeller over i de nye tabeller.
 
@@ -81,7 +74,7 @@ Vi har oplevet, at læse/skrive rettigheder til database og migrations ikke stem
 
 
 ## Sidste udvej: Ultra-destruktiv måde at starte fra nul, hvis alt andet er gået i lort...
-Hvis fx migrations-filer er gået tabt, eller en anden håbløs situation:
+Hvis fx migrations-filer er gået tabt, eller man står i en anden håbløs situation:
 - Flush, dvs. slet, hele databasen med kommandoen `python manage.py flush`.
   * Hvis du kan nøjes med at slette en enkelt database, så brug option `--database <database-navn>`.
   * Pt. har vi dog kun 1 database ved navn 'default' (svarer til webinterface_dev, se _settings.py_).
@@ -99,6 +92,14 @@ Hvis fx migrations-filer er gået tabt, eller en anden håbløs situation:
 - Benyt `python manage.py dbshell` som dok. i [dbshell (Django 2.2)][1].
   * Kræver psql (postgresql-client) installeret i webinterface, som den er fra 3. april 2020.
 - Alternativt, forbind til databasen med GUI vha. [pgAdmin4][2] på port 5432 (localhost:5432 eller server:5432).
+
+
+## Udfordringer når vi nærmer os en endelig version
+- Vi har forskellige versioner af "databasen" på vores forskellige udviklingsmaskiner.
+  * Vi har kørt forskellige versioner af migrations, har forskellige versioner af _models.py_.
+- På udviklingsserveren (mooo) kan vi godt leve med, at databasen bliver slettet / flushet en gang i mellem.
+- På produktionsserveren (AU-server) kører master-version altid _inklusive_ data i databasen, så der kan vi ikke bare slette / flushe.
+- Master skal holdes konsistent for alle maskiner ud fra vores fælles kodebase.
 
 
 [1]: https://docs.djangoproject.com/en/2.2/ref/django-admin/#dbshell
