@@ -42,7 +42,7 @@ Når der ændres i _models.py_ (det kan være en ny tabel, ændring af felttype,
 
 ## Udfordringer når vi nærmer os en endelig version
 - Vi har forskellige versioner af "databasen" på vores forskellige udviklingsmaskiner.
-  * Vi har kørt forskellige versioner af migrationer, har forskellige versioner af _models.py_.
+  * Vi har kørt forskellige versioner af migrations, har forskellige versioner af _models.py_.
 - På udviklingsserveren (mooo) kan vi godt leve med, at databasen bliver slettet / flushet en gang i mellem.
 - På produktionsserveren (AU-server) kører master-version altid _inklusive_ data i databasen, så der kan vi ikke bare slette / flushe.
 - Master skal holdes konsistent for alle maskiner ud fra vores fælles kodebase.
@@ -73,6 +73,11 @@ Migrationer skal versionsstyres ligesom kode, fordi:
    * Så skal Daniel og Jan aftale en måde at kopiere data fra gamle tabeller over i midlertidige tabeller
    * Daniel kører `migrate` og accepterer de irreversible ændringer.
    * Endelig kopierer og konverterer de data fra de midlertidige tabeller over i de nye tabeller.
+
+
+## Permission denied, eller lignende
+Vi har oplevet, at læse/skrive rettigheder til database og migrations ikke stemmer overens, og at Django ikke vil migrere. Man bør nok undersøge hvilke filrettigheder, den er gal med, men man kan gennemføre migrations som `root` (`-u 0`) ved fx:
+- `docker-compose -u 0 webinterface python manage.py migrate`.
 
 
 ## Sidste udvej: Ultra-destruktiv måde at starte fra nul, hvis alt andet er gået i lort...
