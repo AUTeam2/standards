@@ -2,7 +2,7 @@
 
 I Django er en databasemigration en _.py_-fil, som implementerer ændringer i en database.
 Migrationer defineres _per app_, dvs. _demo-modul_ har sine egne migrationer, der ligger i `demo_module/migrations`.
-Migrationer er nummererede og sekventielle. Fx er migration _0007...py_ afhængig af _0006...py_.
+Migrationer er nummererede og lineære/sekventielle. Fx er migration _0007...py_ afhængig af _0006...py_.
 
 - `python manage.py makemigrations` -> laver _.py_-filer.
 - `python manage.py migrate` -> implementerer ændringer ned i databasen (PostgreSQL).
@@ -20,8 +20,9 @@ Nb. hvis du arbejder uden for containeren, så brug `docker-compose exec webinte
 ## Udfordring
 - Vi har forskellige versioner af "databasen" på vores forskellige udviklingsmaskiner.
   * Vi har kørt forskellige versioner af migrationer, har forskellige versioner af _models.py_.
-- På produktionsserveren findes en master-version _inklusive_ data. Denne må ikke **per princip** ikke ødelægges / flushes.
-Det hele skal håndteres i en kodebase.
+- På produktionsserveren findes en master-version _inklusive_ data. Denne må **per princip** ikke ødelægges / flushes.
+- Master skal være konsistent for alle maskiner.
+- Det hele skal håndteres i én kodebase.
 
 ## Principper
 Migrationer _skal_ versionsstyres ligesom kode, fordi:
@@ -35,10 +36,15 @@ Migrationer _skal_ versionsstyres ligesom kode, fordi:
 
 ## Udrulning af ændringer på produktionsserver (AU-server)
 
+## Ultra-destruktiv måde at starte fra nul, hvis alt andet er gået galt
+- Flush, dvs. slet hele databasen: `python manage.py flush`.
+  * Hvis du kan nøjes med at slette en enkelt database, så brug option `--database <database-navn>`. 
+
 
 ## Kig i databasen:
 - Benyt `python manage.py dbshell` som dok. i [dbshell (Django 2.2)][1].
-- Alternativt, forbind til databasen med GUI vha. [pgAdmin4][2].
+  * Kræver psql (postgresql-client) installeret i webinterface, som den er fra 3. april 2020.
+- Alternativt, forbind til databasen med GUI vha. [pgAdmin4][2] på port 5432 (localhost:5432 eller server:5432).
 
 [1]: https://docs.djangoproject.com/en/2.2/ref/django-admin/#dbshell
 [2]: https://www.pgadmin.org/
