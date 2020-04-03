@@ -1,0 +1,44 @@
+# Håndtering af database-migrationer
+
+I Django er en databasemigration en _.py_-fil, som implementerer ændringer i en database.
+Migrationer defineres _per app_, dvs. _demo-modul_ har sine egne migrationer, der ligger i `demo_module/migrations`.
+Migrationer er nummererede og sekventielle. Fx er migration _0007...py_ afhængig af _0006...py_.
+
+- `python manage.py makemigrations` -> laver _.py_-filer.
+- `python manage.py migrate` -> implementerer ændringer ned i databasen (PostgreSQL).
+- `python manage.py migrate <app-navn> <migrationsnavn>` -> migrerer frem/tilbage til et bestemt punkt.
+- `python manage.py showmigrations` -> vis alle migrationer, implementerede og ikke-implementerede.
+
+Nb. hvis du arbejder uden for containeren, så brug `docker-compose exec webinterface python manage.py <kommando>`.
+
+Ændringer til databasen opstår, når der ændres i _models.py_. Det kan være en ny tabel, ændring af felttype, osv.
+- Nogle migrationer kan implementeres uden at give i konflikt med databasen (fx en ny tabel).
+- Andre migrationer vil give konflikter (fx ændring af datatype for en søjle fra boolean til tekst).
+- Migrationer kan give datatab; hvis du sletter et felt/en tabel i _models.py_, og migrerer, så bliver tilhørende data slettet.
+  * Det samme sker, hvis du ruller tilbage til en version af databasen, hvor felt/tabel ikke fandtes.
+
+## Udfordring
+- Vi har forskellige versioner af "databasen" på vores forskellige udviklingsmaskiner.
+  * Vi har kørt forskellige versioner af migrationer, har forskellige versioner af _models.py_.
+- På produktionsserveren findes en master-version _inklusive_ data. Denne må ikke **per princip** ikke ødelægges / flushes.
+Det hele skal håndteres i en kodebase.
+
+## Principper
+Migrationer _skal_ versionsstyres ligesom kode, fordi:
+- Migrationer viser udvikling i databasens struktur og giver traceability.
+- Migrationer gør det muligt at "rulle tilbage" til en tidligere version, hvis noget går galt.
+
+## Migrationer og versionsstyring
+1. Når en ændring i 
+
+## Udrulning af ændringer på udviklingsmaskiner
+
+## Udrulning af ændringer på produktionsserver (AU-server)
+
+
+## Kig i databasen:
+- Benyt `python manage.py dbshell` som dok. i [dbshell (Django 2.2)][1].
+- Alternativt, forbind til databasen med GUI vha. [pgAdmin4][2].
+
+[1]: https://docs.djangoproject.com/en/2.2/ref/django-admin/#dbshell
+[2]: https://www.pgadmin.org/
