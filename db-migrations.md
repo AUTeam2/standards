@@ -42,10 +42,10 @@ Når der ændres i _models.py_ (det kan være en ny tabel, ændring af felttype,
 
 ## Principper
 Migrationer skal versionsstyres ligesom kode, fordi:
-- Migrationer gør det muligt at rulle databasen frem og tilbage på alle udviklingsmaskiner.
+- Migrations gør det muligt at rulle databasen frem og tilbage ensartet på alle udviklingsmaskiner.
 - Det er muligt at rulle databasen tilbage til en tidligere version, hvis noget går galt.
-- Migrationer viser udvikling i databasens struktur mellem forskellige versioner. Det giver traceability.
-- Migrationer hænger sammen med versionering af Webinterface (fx ved release af features ver. 2.00 + database ver. 2.00)
+- Migrations viser udvikling i databasens struktur mellem forskellige versioner. Det giver traceability.
+- Migrations hænger sammen med versionering af Webinterface (fx ved release af features ver. 2.00 + database ver. 2.00)
 
 
 ## Eksempel: Migrations og versionsstyring på udviklingsmaskine
