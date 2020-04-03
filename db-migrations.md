@@ -70,12 +70,12 @@ Migrationer skal versionsstyres ligesom kode, fordi:
 
 ## Permission denied, eller lignende
 Vi har oplevet, at læse/skrive rettigheder til database og migrations ikke stemmer overens, og at Django ikke vil migrere. Man bør nok undersøge hvilke filrettigheder, den er gal med, men man kan gennemføre migrations som `root` (`-u 0`) ved fx:
-- `docker-compose -u 0 webinterface python manage.py migrate`.
+- `docker-compose exec -u 0 webinterface python manage.py migrate`.
 
 
 ## Sidste udvej: Ultra-destruktiv måde at starte fra nul, hvis alt andet er gået i lort...
 Hvis fx migrations-filer er gået tabt, eller man står i en anden håbløs situation:
-- Flush, dvs. slet, hele databasen med kommandoen `python manage.py flush`.
+- Flush, dvs. slet, hele databasen med kommandoen `docker-compose exec webinterface python manage.py flush`.
   * Hvis du kan nøjes med at slette en enkelt database, så brug option `--database <database-navn>`.
   * Pt. har vi dog kun 1 database ved navn 'default' (svarer til webinterface_dev, se _settings.py_).
 - Kør alle migrations (`migrate`).
