@@ -6,16 +6,17 @@ Skriv gerne til når/hvis du har flere tips & tricks.
 
 ## Databasemigrationer
 I Django er migrations de _.py_-filer, som  fortæller Django, hvordan den skal implementere ændringer i en SQL-database. Det er en slags opskrift.
-Migrations laves automatisk _per app_, dvs. Så _demo-modul_ har sine egne migrations, der ligger i `demo_module/migrations`. Der kan dog være afhængigheder til andre apps (fx via ForeignKeys).
+Migrations laves automatisk _per app_. Så _demo-modul_ har sine egne migrations, der ligger i `demo_module/migrations`. Der kan dog være afhængigheder til andre apps (fx via ForeignKeys).
 Man kan som udvikler så vælge at implementere ændringerne (udføre opskriften), dvs. `migrate`. Det kan være både frem til nye versioner eller tilbage til ældre versioner.
 
 Migrations er nummererede og lineære/sekventielle. Fx er migration _0007...py_ afhængig af _0006...py_, osv.
 Kæden af migrations skal være lineær og ubrudt, og den skal være konsistent på alle maskiner, for:
-- Hvis man sletter en migrations-fil, så kan man ikke "rulle tilbage". 
-- Hvis Django kan se, at stien af migrations divergerer og ikke er lineæer, fx hvis _0007...py_ forgrenes i to forskellige retninger, så kan de ikke migrere databasen
+- Hvis man sletter en migrations-fil, så kan man ikke "rulle tilbage".
+- Hvis man er ude af sync og mangler en ældre fil, så kan det være svært at komme up-to-date.
+- Hvis Django kan se, at stien af migrations divergerer og ikke er lineæer, fx hvis _0007...py_ forgrenes i to forskellige retninger, så kan den ikke migrere databasen
   * Django vil forsøge at foreslå et fix. Det er muligvis nødvendigt at lave et manuelt fix.
 
-Django's dokumentation kan læses her: [Django Migrations (2.2)][4].
+Django's dokumentation kan evt. læses her: [Django Migrations (2.2)][4].
 
 
 ## Django-kommandoer til migrations
