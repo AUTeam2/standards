@@ -17,6 +17,7 @@ Skriv gerne til når/hvis du har flere tips & tricks.
 - Load startdata (fixtures)
 - Kig i databasen
 - Udfordringer når vi nærmer os en endelig version
+- I tilfælde af at intet virker for databasen, ved migrations eller server setup: Nuke it!
 
 
 ## Hvad er migrations?
@@ -53,6 +54,8 @@ Når der ændres i _models.py_ (det kan være en ny tabel, ændring af felttype,
 - Andre migrationer vil give konflikter (fx ændring af datatype for en søjle, fx fra boolean til tekst).
 - Migrationer kan give datatab; hvis du sletter et felt/en tabel i _models.py_, og migrerer, så bliver tilhørende data slettet.
   * Det samme sker, hvis du ruller tilbage til en version af databasen, hvor felt/tabel ikke fandtes.
+  
+- Når man ændre i databasen, prøver django/psql selv på at mindske fejlene der vil opstå f.eks. hvis man ændre hvilke data der er    primary key, vil der (når man kører migrations) blive foreslået om den selv skal assigne værdier til det foregående data der ellers vil bliver "tabt", men det er dog ikke en permanent løsning, og der vil anbefales at man retter tabel indholdet selv!
 
 
 ## Principper for versionsstyring af migrations
@@ -116,7 +119,7 @@ Vi har oplevet, at læse/skrive rettigheder til database og migrations ikke stem
 
 ### Permanent uløselige fejl
 Hvis intet virker, så:
-- Slet alle filer i `migrations/`-mappen
+- Slet alle filer i `migrations/`-mappen, pånær __init__.py filen
 - Drop databasen / alle tabeller i databasen
 - Kør så `makemigrations`
 - Kør `migrate`.
@@ -140,6 +143,25 @@ Hvis intet virker, så:
 - På udviklingsserveren (mooo) kan vi godt leve med, at databasen bliver slettet / flushet en gang i mellem.
 - På produktionsserveren (AU-server) kører master-version altid _inklusive_ data i databasen, så der kan vi ikke bare slette / flushe.
 - Master skal holdes konsistent for alle maskiner ud fra vores fælles kodebase.
+
+# I tilfælde af at intet virker for databasen, ved migrations eller server setup: Nuke it!
+Følg disse trin, hvor " " er terminal kommandoer
+1. Gå ind i projekt mappen.
+2. "docker-compose down"
+3. "docker system prune"
+4. "docker volume rm data-volume"
+5. "docker rmi (postgres image id)"
+          Image id'et kan findes med "docker images"
+6. "docker volume create data-volume"
+7. gå ind i migration mappen i appen som giver problemer.
+          f.eks. cd webinterface/demo_module/migrations
+8. slet alle migrations filer udover __init__.py
+9. gå tilbage til projekt mappen ("cd ../../..")
+10. i Dockerfile under webinterface mappen, udkommenter feltet der vil sætte bruger som non-su
+          dette felt skulle gerne stå tæt på bunden af Dockerfilen!
+11. "docker-compose up --build"
+
+Denne sekvens vil fjerne ALT indhold i databasen! så brug med omtanke, og husk at ændre Dockerfilen tilbage!
 
 
 [1]: https://docs.djangoproject.com/en/2.2/ref/django-admin/#dbshell
