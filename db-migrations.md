@@ -4,14 +4,14 @@ Her er et par tips & tricks til at arbejde med databasen mens vi udvikler på pr
 Skriv gerne til når/hvis du har flere tips & tricks.
 
 # Indhold
-- [Hvad er migrations?](#Hvad-er-migrations?)
+- [Hvad er migrations?](#Hvad-er-migrations)
 - [Django-kommandoer til migrations](#Django-kommandoer-til-migrations)
-- [Migrations opstår når...](#Migrations-opstår-når...)
+- [Migrations opstår når...](#Migrations-opstår-når)
 - [Principper for versionsstyring af migrations](#Principper-for-versionsstyring-af-migrations)
 - [Eksempel: Migrations og versionsstyring på udviklingsmaskine](#Eksempel-Migrations-og-versionsstyring-på-udviklingsmaskine)
-- Eksempel fortsat: Migrations og versionsstyring på produktionsserver
-- Fejl og mulige fixes
-  * Tøm database...
+- [Eksempel fortsat: Migrations og versionsstyring på produktionsserver](#Eksempel-fortsat-Migrations-og-versionsstyring-på produktionsserver)
+- [Kendte fejl og mulige fixes :ambulance:](#Kendte-fejl-og-mulige-fixes)
+  * [Tøm database :toilet:](#Tøm-database)
   * DuplicateTable: relation ... already exists
   * Permission denied, eller lignende
   * Permanent uløselige fejl
@@ -47,7 +47,7 @@ Django's dokumentation kan evt. læses her: [Django Migrations (2.2)][4].
 
 Nb. hvis du arbejder uden for Django-containeren, så brug `docker-compose exec webinterface python manage.py <kommando>`.
 
-I databasetabellen `django_migrations` kan man også se migrations, der er implementeret.
+I databasetabellen `django_migrations` kan man også se migrations, der er implementeret. :construction_worker:
 
 ## Migrations opstår når...
 Når der ændres i _models.py_ (det kan være en ny tabel, ændring af felttype, osv), så har du en ikke-implementeret ændring til databasen:
@@ -89,10 +89,10 @@ Migrationer skal versionsstyres ligesom kode, fordi:
    * Hvis dette sker tit, så overvej at bruge _fixtures_, se længere nede (load startdata).
 
 
-## Fejl og mulige fixes
+## Kendte fejl og mulige fixes
 
 ### Tøm database
-Hvis du vil tømme databasen (dvs. nulstille alle tabeller, men ikke slette tabellerne):
+:toilet: Hvis du vil tømme databasen (dvs. nulstille alle tabeller, men ikke slette tabellerne):
 - Flush, dvs. tøm, hele databasen med kommandoen `docker-compose exec webinterface python manage.py flush`.
   * Hvis du kan nøjes med at tømme en enkelt database, så brug option `--database <database-navn>`.
   * Pt. har vi dog kun 1 database ved navn 'default' (svarer til webinterface_dev, se _settings.py_).
