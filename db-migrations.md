@@ -9,17 +9,16 @@ Skriv gerne til når/hvis du har flere tips & tricks.
 - [Migrations opstår når...](#Migrations-opstår-når)
 - [Principper for versionsstyring af migrations](#Principper-for-versionsstyring-af-migrations)
 - [Eksempel: Migrations og versionsstyring på udviklingsmaskine](#Eksempel-Migrations-og-versionsstyring-på-udviklingsmaskine)
-- [Eksempel fortsat: Migrations og versionsstyring på produktionsserver](#Eksempel-fortsat-Migrations-og-versionsstyring-på produktionsserver)
+- [Eksempel fortsat: Migrations og versionsstyring på produktionsserver](#Eksempel-fortsat-Migrations-og-versionsstyring-på-produktionsserver)
 - [Kendte fejl og mulige fixes :ambulance:](#Kendte-fejl-og-mulige-fixes)
   * [Tøm database :toilet:](#Tøm-database)
-  * DuplicateTable: relation ... already exists
-  * Permission denied, eller lignende
-  * Permanent uløselige fejl
+  * [DuplicateTable: relation ... already exists](#DuplicateTable-relation-already-exists)
+  * [Permission denied, eller lignende](#Permission-denied-eller-lignende)
+  * [Permanent uløselige fejl](#Permanent-uløselige-fejl)
   * [Nuke it! :warning:](#I-tilfælde-af-at-intet-virker-for-databasen-ved-migrations-eller-server-setup-Nuke-it)
-- Load startdata (fixtures)
-- Kig i databasen
-- Udfordringer når vi nærmer os en endelig version
-- I tilfælde af at intet virker for databasen, ved migrations eller server setup: Nuke it!
+- [Load startdata (fixtures)](#Load-startdata-fixtures)
+- [Kig i databasen](#Kig-i-databasen)
+- [Udfordringer når vi nærmer os en endelig version](#Udfordringer-når-vi-nærmer-os-en-endelig-version)
 
 
 ## Hvad er migrations?
