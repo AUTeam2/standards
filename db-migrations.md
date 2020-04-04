@@ -1,19 +1,21 @@
-# Fælles håndtering af databasestruktur med migrationer
+# Fælles håndtering af databasestruktur med migrationer :rocket:
 
 Her er et par tips & tricks til at arbejde med databasen mens vi udvikler på projektet.
 Skriv gerne til når/hvis du har flere tips & tricks.
 
 # Indhold
-- Hvad er migrations?
-- Django-kommandoer til migrations
-- Migrations opstår når...
-- Principper for versionsstyring af migrations
-- Eksempel: Migrations og versionsstyring på udviklingsmaskine
+- [Hvad er migrations?](#Hvad-er-migrations?)
+- [Django-kommandoer til migrations](#Django-kommandoer-til-migrations)
+- [Migrations opstår når...](#Migrations-opstår-når...)
+- [Principper for versionsstyring af migrations](#Principper-for-versionsstyring-af-migrations)
+- [Eksempel: Migrations og versionsstyring på udviklingsmaskine](#Eksempel-Migrations-og-versionsstyring-på-udviklingsmaskine)
 - Eksempel fortsat: Migrations og versionsstyring på produktionsserver
 - Fejl og mulige fixes
-  * Nulstil database...
+  * Tøm database...
   * DuplicateTable: relation ... already exists
   * Permission denied, eller lignende
+  * Permanent uløselige fejl
+  * [Nuke it! :warning:](#I-tilfælde-af-at-intet-virker-for-databasen-ved-migrations-eller-server-setup-Nuke-it)
 - Load startdata (fixtures)
 - Kig i databasen
 - Udfordringer når vi nærmer os en endelig version
@@ -89,7 +91,7 @@ Migrationer skal versionsstyres ligesom kode, fordi:
 
 ## Fejl og mulige fixes
 
-### Tøm database...
+### Tøm database
 Hvis du vil tømme databasen (dvs. nulstille alle tabeller, men ikke slette tabellerne):
 - Flush, dvs. tøm, hele databasen med kommandoen `docker-compose exec webinterface python manage.py flush`.
   * Hvis du kan nøjes med at tømme en enkelt database, så brug option `--database <database-navn>`.
@@ -126,6 +128,27 @@ Hvis intet virker, så:
 - Men PAS PÅ med at committe sletning af filerne! Diskutér med teamet først!
 
 
+### I tilfælde af at intet virker for databasen, ved migrations eller server setup: Nuke it! 
+:warning: Følg disse trin, hvor " " er terminal kommandoer
+1. Gå ind i projekt mappen.
+2. "docker-compose down"
+3. "docker system prune"
+4. "docker volume rm data-volume"
+5. "docker rmi (postgres image id)"
+          Image id'et kan findes med "docker images"
+6. "docker volume create data-volume"
+7. gå ind i migration mappen i appen som giver problemer.
+          f.eks. cd webinterface/demo_module/migrations
+8. slet alle migrations filer udover __init__.py
+9. gå tilbage til projekt mappen ("cd ../../..")
+10. i Dockerfile under webinterface mappen, udkommenter feltet der vil sætte bruger som non-su
+          dette felt skulle gerne stå tæt på bunden af Dockerfilen!
+11. "docker-compose up --build"
+
+Denne sekvens vil fjerne ALT indhold i databasen! så brug med omtanke, og husk at ændre Dockerfilen tilbage!
+
+
+
 ## Load startdata (fixtures)
 - Det er muligt at loade startdata til tabeller. Det er en måde at sikre, at evt. påkrævet stamdata kan genskabes hurtigt.
 - Se [Initial data][3].
@@ -143,25 +166,6 @@ Hvis intet virker, så:
 - På udviklingsserveren (mooo) kan vi godt leve med, at databasen bliver slettet / flushet en gang i mellem.
 - På produktionsserveren (AU-server) kører master-version altid _inklusive_ data i databasen, så der kan vi ikke bare slette / flushe.
 - Master skal holdes konsistent for alle maskiner ud fra vores fælles kodebase.
-
-# I tilfælde af at intet virker for databasen, ved migrations eller server setup: Nuke it!
-Følg disse trin, hvor " " er terminal kommandoer
-1. Gå ind i projekt mappen.
-2. "docker-compose down"
-3. "docker system prune"
-4. "docker volume rm data-volume"
-5. "docker rmi (postgres image id)"
-          Image id'et kan findes med "docker images"
-6. "docker volume create data-volume"
-7. gå ind i migration mappen i appen som giver problemer.
-          f.eks. cd webinterface/demo_module/migrations
-8. slet alle migrations filer udover __init__.py
-9. gå tilbage til projekt mappen ("cd ../../..")
-10. i Dockerfile under webinterface mappen, udkommenter feltet der vil sætte bruger som non-su
-          dette felt skulle gerne stå tæt på bunden af Dockerfilen!
-11. "docker-compose up --build"
-
-Denne sekvens vil fjerne ALT indhold i databasen! så brug med omtanke, og husk at ændre Dockerfilen tilbage!
 
 
 [1]: https://docs.djangoproject.com/en/2.2/ref/django-admin/#dbshell
