@@ -23,3 +23,7 @@ Lidt demo med code completion og en superhurtig snak om kodestandard.
 [Kom i gang 4 - PyCharm nu med code completion (2:56)](https://youtu.be/zQ1FhAhG5r4).
 
 God fornøjelse! :beers:
+
+
+## Test cases med Selenium IDE
+[Demo af Selenium til at afvikle tests](https://youtu.be/VvI-IKYkFOc).
