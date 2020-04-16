@@ -1,9 +1,9 @@
 # Videoguides til at komme i gang med Webinterface :rocket:
 
 Indhold
-1. Kom i gang med docker-compose og PyCharm
-2. [Kom i gang med Django](#-2-Django)
-3. Testcases med Selenium IDE
+[1. Kom i gang med docker-compose og PyCharm](#1-Docker-compose-og-PyCharm)
+[2. Kom i gang med Django](#2-Django)
+[3. Testcases med Selenium IDE](#3-Testcases-med-Selenium-IDE)
 
 ## 1. Docker-compose og PyCharm
 ### Få Webinterface op at køre
